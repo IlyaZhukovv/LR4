@@ -47,7 +47,7 @@ namespace Laba4
                 //Если значение уже присутствует в дереве, то выдает ошибку 
                 if (ContainsValue(root, value))
                 {
-                    throw new ArgumentException("Element already exists in the tree");
+                    
                 }
                 //Иначе, вызывается вспомогательный метод InsertRecursive, который рекурсивно проходит по дереву и добавляет новый узел на правильное место.
                 else
@@ -205,7 +205,7 @@ namespace Laba4
             return result != null;
         }
 
-        //Метод "SearchRecursive" - это частный вспомогательный метод, который рекурсивно выполняет поиск значения в двоичном дереве.
+        //Метод "SearchRecursive" - это вспомогательный метод, который рекурсивно выполняет поиск значения в двоичном дереве.
         //Он сравнивает значение с текущим значением узла и рекурсивно выполняет поиск в левом или правом поддереве до тех пор,
         //пока не найдет соответствующее значение или не достигнет нулевого узла.
         private Node SearchRecursive(Node currentNode, int value)
@@ -291,6 +291,28 @@ namespace Laba4
             }
             return minValue;
         }
+        public int GetNodePosition(int value)
+        {
+            int position = 0;
+            Node currentNode = root;
+            while (currentNode != null)
+            {
+                if (currentNode.value == value)
+                {
+                    return position;
+                }
+                else if (value < currentNode.value)
+                {
+                    currentNode = currentNode.left;
+                }
+                else
+                {
+                    currentNode = currentNode.right;
+                }
+                position++;
+            }
+            return -1; // Если элемент не найден
+        }
     }
 
     class Program
@@ -317,6 +339,7 @@ namespace Laba4
             int count;
             int searchValueCheck;
             bool result;
+            int searchValue2;
 
             do
             {
@@ -326,7 +349,8 @@ namespace Laba4
                 Console.WriteLine("3.Добавление элемента в дерево");
                 Console.WriteLine("4.Подсчитать число вхождений заданного элемента в дерево");
                 Console.WriteLine("5.Поиск элемента в дереве");
-                Console.WriteLine("6.Выход");
+                Console.WriteLine("6.Поиск позиции значения");
+                Console.WriteLine("7.Выход");
 
                 menuOption = Console.ReadLine();
 
@@ -372,6 +396,18 @@ namespace Laba4
                         }
                         break;
                     case "6":
+                        Console.Write("Введите значение для поиска: ");
+                        if (int.TryParse(Console.ReadLine(), out searchValue2))
+                        {
+                            int occurrences = tree.GetNodePosition(searchValue2);
+                            Console.WriteLine($"Значение {searchValue2} находится на {occurrences} месте в дереве.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Неверный формат ввода для значения поиска.");
+                        }
+                        break;
+                    case "7":
                         Console.WriteLine("Программа завершена");
                         break;
                     default:
@@ -379,7 +415,7 @@ namespace Laba4
                         break;
                 }
                 Console.WriteLine();
-            } while (menuOption != "6");
+            } while (menuOption != "7");
         }
     }
 }
